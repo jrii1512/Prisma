@@ -1,8 +1,24 @@
 import Head from 'next/head'
 import ArticleList from '../components/ArticleList'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+async function main() {
+  const getData = "SELECT * FROM 'public'.'huoltorekisteri' LIMIT 100"
+  console.log("Huoltorekisteri dataa: ", getData.res)
+}
+
+main()
+  .catch((e) => {
+    throw e
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
 
 export default function Home({ articles }) {
-  
+
  return (
   <div>
     <Head>
@@ -19,7 +35,7 @@ export const getStaticProps = async () => {
   const articles = await res.json()
 
   return {
-    props: {      
+    props: {
       articles
     }
   }
